@@ -1,0 +1,17 @@
+name: fastapi
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.4
+  - pip
+  - pip:
+    - fastapi[all]
+    - diffusers==0.4.0
+    - transformers
+    - scipy
+    - ftfy
+    - mypy
+    - ruff
+    - black
+    - ipykernel
