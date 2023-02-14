@@ -7,11 +7,15 @@ dependencies:
   - pip
   - pip:
     - fastapi[all]
-    - diffusers==0.4.0
+    - diffusers
     - transformers
+    - torch
+    - torchvision
+    - accelerate
     - scipy
     - ftfy
     - mypy
     - ruff
     - black
     - ipykernel
+    - ipywidgets
