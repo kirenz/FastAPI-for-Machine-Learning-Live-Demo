@@ -4,7 +4,7 @@ import torch
 from diffusers import StableDiffusionPipeline
 from PIL.Image import Image
 
-token_path = Path("token.txt")
+token_path = Path("my-token.txt")
 token = token_path.read_text().strip()
 
 # get your token at https://huggingface.co/settings/tokens
@@ -15,12 +15,18 @@ pipe = StableDiffusionPipeline.from_pretrained(
     use_auth_token=token,
 )
 
-pipe.to("cuda")
+#pipe.to("cuda")
 
-# prompt = "a photograph of an astronaut riding a horse"
+# for MacM1/M2
+pipe = pipe.to("mps")
+
+# Recommended if your computer has < 64 GB of RAM
+pipe.enable_attention_slicing()
+
+prompt = "a photograph of an astronaut riding a horse"
 
 
-# image = pipe(prompt)["sample"][0]
+image = pipe(prompt)["sample"][0]
 
 
 def obtain_image(
@@ -30,7 +36,7 @@ def obtain_image(
     num_inference_steps: int = 50,
     guidance_scale: float = 7.5,
 ) -> Image:
-    generator = None if seed is None else torch.Generator("cuda").manual_seed(seed)
+    generator = None if seed is None else torch.Generator("mps").manual_seed(seed)
     print(f"Using device: {pipe.device}")
     image: Image = pipe(
         prompt,
@@ -41,4 +47,4 @@ def obtain_image(
     return image
 
 
-# image = obtain_image(prompt, num_inference_steps=5, seed=1024)
+image = obtain_image(prompt, num_inference_steps=5, seed=1024)
